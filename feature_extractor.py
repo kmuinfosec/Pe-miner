@@ -222,18 +222,13 @@ def extract_feature(file_path):
                 # Group Icons
                 elif resource_type.struct.Id == 14:
                     ret['Group Icons'] += len(resource_type.directory.entries)
-        print(list(ret.keys()))
-
         return ret
     except pefile.PEFormatError as pefe:
         print("PEFormatError", pefe, os.path.basename(file_path))
+        return None
     except Exception as e:
         print("Exception", e, os.path.basename(file_path))
-
-if __name__ == '__main__':
-    extract_feature(r"C:\Nexon\Maple\Patcher.exe")
-    pass
-
+        return None
 
 
 
