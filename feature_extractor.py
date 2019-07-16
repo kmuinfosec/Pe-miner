@@ -22,7 +22,7 @@ __LIST_OF_DLLS = {
     'DCIMAN32.DLL', # Display Control Interface Manager
     'DSKMAINT.DLL', # Disk Utilities engine
     'GDI32.DLL', # GDI Client DLL
-    'Group', # policy support
+    'GROUP.DLL', # policy support
     'HYPERTERM.DLL', # Terminal DLL
     'KERNL32.DLL', # Windows NT BASE API Client DLL
     'LZ32.DLL', # LZ Expand/Compress API DLL
@@ -73,7 +73,7 @@ __LIST_OF_DLLS = {
     'WINMM.DLL', # MCI API DLL
     'WINREG.DLL', # Remote Registry support
     'WINSOCK.DLL', # Socket API for Windows
-    'WS2', # 32.DLL Windows Socket 2.0 32-Bit DLL
+    'WS2.DLL', # 32.DLL Windows Socket 2.0 32-Bit DLL
     'WSOCK32.DLL', # Windows Socket 32-Bit DLL
 }
 
@@ -222,11 +222,18 @@ def extract_feature(file_path):
                 # Group Icons
                 elif resource_type.struct.Id == 14:
                     ret['Group Icons'] += len(resource_type.directory.entries)
+        print(list(ret.keys()))
+
         return ret
     except pefile.PEFormatError as pefe:
         print("PEFormatError", pefe, os.path.basename(file_path))
     except Exception as e:
         print("Exception", e, os.path.basename(file_path))
+
+if __name__ == '__main__':
+    extract_feature(r"C:\Nexon\Maple\Patcher.exe")
+    pass
+
 
 
 
