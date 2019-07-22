@@ -167,7 +167,7 @@ def extract_feature(file_path):
         for member in __OPTIONAL_HEADER:
             ret[member] = getattr(pe.OPTIONAL_HEADER, member, -1)
         # Feature From Optional header: data directories
-        for structure in pe.OPTIONAL_HEADER.DATA_DIRECTORY[:14]:
+        for structure in pe.OPTIONAL_HEADER.DATA_DIRECTORY[:15]:
             ret[f'{structure.name}:VirtualAddress'] = structure.VirtualAddress
             ret[f'{structure.name}:Size'] = structure.Size
         # Feature From Section headers
@@ -182,7 +182,7 @@ def extract_feature(file_path):
             elif section.Name == b'.data\x00\x00\x00':
                 for member in __SECTION_HEADER:
                     ret[f'data:{member}'] = getattr(section, member, -1)
-            elif section.Name == b'.resource\x00\x00\x00':
+            elif section.Name == b'.rsrc\x00\x00\x00':
                 for member in __SECTION_HEADER:
                     ret[f'resource:{member}'] = getattr(section, member, -1)
 
