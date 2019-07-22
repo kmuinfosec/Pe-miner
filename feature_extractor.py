@@ -124,6 +124,24 @@ __OPTIONAL_HEADER = [
     'NumberOfRvaAndSizes' # A pointer to the first IMAGE_DATA_DIRECTORY structure in the data directory.
 ]
 
+__DIRECTORY_ENTRY_TYPES = {
+    'IMAGE_DIRECTORY_ENTRY_EXPORT' : 0,
+    'IMAGE_DIRECTORY_ENTRY_IMPORT' : 1,
+    'IMAGE_DIRECTORY_ENTRY_RESOURCE' : 2,
+    'IMAGE_DIRECTORY_ENTRY_EXCEPTION' : 3,
+    'IMAGE_DIRECTORY_ENTRY_SECURITY' : 4,
+    'IMAGE_DIRECTORY_ENTRY_BASERELOC' : 5,
+    'IMAGE_DIRECTORY_ENTRY_DEBUG' : 6,
+    'IMAGE_DIRECTORY_ENTRY_COPYRIGHT' : 7,
+    'IMAGE_DIRECTORY_ENTRY_GLOBALPTR' : 8,
+    'IMAGE_DIRECTORY_ENTRY_TLS' : 9,
+    'IMAGE_DIRECTORY_ENTRY_LOAD_CONFIG' : 10,
+    'IMAGE_DIRECTORY_ENTRY_BOUND_IMPORT' : 11,
+    'IMAGE_DIRECTORY_ENTRY_IAT' : 12,
+    'IMAGE_DIRECTORY_ENTRY_DELAY_IMPORT' : 13,
+    'IMAGE_DIRECTORY_ENTRY_COM_DESCRIPTOR' : 14,
+    'IMAGE_DIRECTORY_ENTRY_RESERVED' : 15
+}
 # https://docs.microsoft.com/en-us/windows/win32/debug/pe-format#section-table-section-headers
 __SECTION_HEADER = [
     'VirtualSize',
@@ -167,7 +185,10 @@ def extract_feature(file_path):
         for member in __OPTIONAL_HEADER:
             ret[member] = getattr(pe.OPTIONAL_HEADER, member, -1)
         # Feature From Optional header: data directories
-        for structure in pe.OPTIONAL_HEADER.DATA_DIRECTORY[:15]:
+        for key in __DIRECTORY_ENTRY_TYPES.keys():
+            ret[f'{key}:VirtualAddress'] = -1
+            ret[f'{key}:Size'] = -1
+        for structure in pe.OPTIONAL_HEADER.DATA_DIRECTORY:
             ret[f'{structure.name}:VirtualAddress'] = structure.VirtualAddress
             ret[f'{structure.name}:Size'] = structure.Size
         # Feature From Section headers
